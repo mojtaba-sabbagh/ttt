@@ -22,6 +22,7 @@
             <span class="XClass" v-if="pname == 'X' "> {{ pname }} </span> 
             <span class="OClass" v-if="pname == 'O' "> {{ pname }} </span> 
         </p> 
+        <p v-if="draw"> Draw! Game Over! </p>
     </div>
 </template>
 
@@ -43,7 +44,8 @@
                 signs: [{'0':'', '1':'', '2':''}, 
                         {'3':'', '4':'', '5':''}, 
                         {'6':'', '7':'', '8':''}],
-                pname : ''
+                pname : '',
+                draw : false
             }
        },
         created: function () {
@@ -71,6 +73,51 @@
                     this.won = true;
               }
             }
+            if (this.allCellsFilled() && !this.won){
+                this.draw = true;
+            }
+            else {
+                this.draw = false;
+            }
+          },
+          fillBlank: function () {
+            this.signs.forEach(element => {
+              for (var k in element){
+                element[k] = this.BLANK;
+              }
+            });
+            this.won = false;
+            this.isXTurn = true;
+          },
+          calculateWinner: function () {
+            const lines = [
+              [[0, 0], [0, 1], [0, 2]],
+              [[1, 3], [1, 4], [1, 5]],
+              [[2, 6], [2, 7], [2, 8]],
+              [[0, 0], [1, 3], [2, 6]],
+              [[0, 1], [1, 4], [2, 7]],
+              [[0, 2], [1, 5], [2, 8]],
+              [[0, 0], [1, 4], [2, 8]],
+              [[0, 2], [1, 4], [2, 6]],
+            ];
+            for (let i = 0; i < lines.length; i++) {
+              const [a, b, c] = lines[i];
+              if (this.signs[a[0]][a[1]]!=this.BLANK && this.signs[a[0]][a[1]] === this.signs[b[0]][b[1]] 
+                  && this.signs[a[0]][a[1]] === this.signs[c[0]][c[1]]) {
+                return this.signs[a[0]][a[1]];
+              }
+            }
+            return null;
+          },
+          allCellsFilled: function() {
+              for (let i=0; i<this.signs.length; i++) {
+                  for (let key in this.signs[i]){
+                      if (this.signs[i][key] == this.BLANK) {
+                          return false;
+                      }
+                  }
+               }
+              return true;
           },
           computerPlay: function () {
               const lines = [
@@ -137,6 +184,7 @@
                     hit = true;
                 }
             }
+            // check for corners if empty
             if (!hit){
                 let blanks = [];
                 [[0, 0], [0, 2], [2, 6], [2, 8]].forEach(el => {
@@ -150,6 +198,7 @@
                     hit = true;
                 }
             }
+            //look for every vacant cell.
             if (!hit){
                 let blanks = [];
                 for (let i = 0; i < 3; i++){
@@ -168,35 +217,6 @@
            this.isXTurn = !this.isXTurn;
            return;
           },
-          fillBlank: function () {
-            this.signs.forEach(element => {
-              for (var k in element){
-                element[k] = this.BLANK;
-              }
-            });
-            this.won = false;
-            this.isXTurn = true;
-          },
-          calculateWinner: function () {
-            const lines = [
-              [[0, 0], [0, 1], [0, 2]],
-              [[1, 3], [1, 4], [1, 5]],
-              [[2, 6], [2, 7], [2, 8]],
-              [[0, 0], [1, 3], [2, 6]],
-              [[0, 1], [1, 4], [2, 7]],
-              [[0, 2], [1, 5], [2, 8]],
-              [[0, 0], [1, 4], [2, 8]],
-              [[0, 2], [1, 4], [2, 6]],
-            ];
-            for (let i = 0; i < lines.length; i++) {
-              const [a, b, c] = lines[i];
-              if (this.signs[a[0]][a[1]]!=this.BLANK && this.signs[a[0]][a[1]] === this.signs[b[0]][b[1]] 
-                  && this.signs[a[0]][a[1]] === this.signs[c[0]][c[1]]) {
-                return this.signs[a[0]][a[1]];
-              }
-            }
-            return null;
-          }
         }
       }
 </script>
