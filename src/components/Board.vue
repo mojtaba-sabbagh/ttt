@@ -84,6 +84,7 @@
                 [[0, 2], [1, 4], [2, 6]],
               ];
             let hit = false;
+            // check if I can be a winner!
             for (let i = 0; i < lines.length; i++) {
                 const [a, b, c] = lines[i];
                 if (this.signs[a[0]][a[1]] == this.BLANK && this.signs[b[0]][b[1]] == 'O' 
@@ -105,6 +106,7 @@
                       break;
                 }   
             }
+            // if I can stop winning competitor.
             if (!hit){
                 for (let i = 0; i < lines.length; i++) {
                     const [a, b, c] = lines[i];
@@ -128,9 +130,25 @@
                     }   
                 }
             }
+            // check if the middle square is vacant
             if (!hit){
                 if (this.signs[1][4] == this.BLANK){
                     this.signs[1][4] = 'O';
+                    hit = true;
+                }
+            }
+            if (!hit){
+                let blanks = [];
+                [[0, 0], [0, 2], [2, 6], [2, 8]].forEach(el => {
+                    if (this.signs[el[0]][el[1]] == this.BLANK){
+                            blanks.push(el);
+                        }
+                });
+                console.log('Goushe...');
+                console.log(blanks);
+                if (blanks.length > 0){
+                    const rndCell = blanks[Math.floor(Math.random() * blanks.length)];
+                    this.signs[rndCell[0]][rndCell[1]] = 'O'
                     hit = true;
                 }
             }
@@ -143,10 +161,12 @@
                         }
                     }
                 }
-                if (blanks){
+                console.log('Last...');
+                console.log(blanks);
+                if (blanks.length > 0){
                     const rndCell = blanks[Math.floor(Math.random() * blanks.length)];
                     this.signs[rndCell[0]][rndCell[1]] = 'O'
-
+                    hit = true;
                 }
            }
            this.isXTurn = !this.isXTurn;
