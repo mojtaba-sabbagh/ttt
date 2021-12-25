@@ -144,8 +144,6 @@
                             blanks.push(el);
                         }
                 });
-                console.log('Goushe...');
-                console.log(blanks);
                 if (blanks.length > 0){
                     const rndCell = blanks[Math.floor(Math.random() * blanks.length)];
                     this.signs[rndCell[0]][rndCell[1]] = 'O'
@@ -161,9 +159,7 @@
                         }
                     }
                 }
-                console.log('Last...');
-                console.log(blanks);
-                if (blanks.length > 0){
+                 if (blanks.length > 0){
                     const rndCell = blanks[Math.floor(Math.random() * blanks.length)];
                     this.signs[rndCell[0]][rndCell[1]] = 'O'
                     hit = true;
