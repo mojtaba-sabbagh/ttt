@@ -27,7 +27,9 @@
 </template>
 
 <script>
-    import Square from './Square.vue'
+    import Square from './Square.vue';
+    import rule5 from './rules.js';
+
     export default {
 
         props: {
@@ -120,100 +122,8 @@
               return true;
           },
           computerPlay: function () {
-              const lines = [
-                [[0, 0], [0, 1], [0, 2]],
-                [[1, 3], [1, 4], [1, 5]],
-                [[2, 6], [2, 7], [2, 8]],
-                [[0, 0], [1, 3], [2, 6]],
-                [[0, 1], [1, 4], [2, 7]],
-                [[0, 2], [1, 5], [2, 8]],
-                [[0, 0], [1, 4], [2, 8]],
-                [[0, 2], [1, 4], [2, 6]],
-              ];
-            let hit = false;
-            // check if I can be a winner!
-            for (let i = 0; i < lines.length; i++) {
-                const [a, b, c] = lines[i];
-                if (this.signs[a[0]][a[1]] == this.BLANK && this.signs[b[0]][b[1]] == 'O' 
-                  && this.signs[c[0]][c[1]] == 'O') {
-                      this.signs[a[0]][a[1]] = 'O';
-                      hit = true;
-                      break;
-                  }
-                else if (this.signs[a[0]][a[1]] == 'O' && this.signs[b[0]][b[1]] == this.BLANK 
-                  && this.signs[c[0]][c[1]] == 'O') {
-                      this.signs[b[0]][b[1]] = 'O';
-                      hit = true;
-                      break;
-                } 
-                else if (this.signs[a[0]][a[1]] == 'O' && this.signs[b[0]][b[1]] == 'O' 
-                  && this.signs[c[0]][c[1]] == this.BLANK) {
-                      this.signs[c[0]][c[1]] = 'O';
-                      hit = true;
-                      break;
-                }   
-            }
-            // if I can stop winning competitor.
-            if (!hit){
-                for (let i = 0; i < lines.length; i++) {
-                    const [a, b, c] = lines[i];
-                    if (this.signs[a[0]][a[1]] == this.BLANK && this.signs[b[0]][b[1]] == 'X' 
-                    && this.signs[c[0]][c[1]] == 'X') {
-                        this.signs[a[0]][a[1]] = 'O';
-                        hit = true;
-                        break;
-                    }
-                    else if (this.signs[a[0]][a[1]] == 'X' && this.signs[b[0]][b[1]] == this.BLANK 
-                    && this.signs[c[0]][c[1]] == 'X') {
-                        this.signs[b[0]][b[1]] = 'O';
-                        hit = true;
-                        break;
-                    } 
-                    else if (this.signs[a[0]][a[1]] == 'X' && this.signs[b[0]][b[1]] == 'X' 
-                    && this.signs[c[0]][c[1]] == this.BLANK) {
-                        this.signs[c[0]][c[1]] = 'O';
-                        hit = true;
-                        break;
-                    }   
-                }
-            }
-            // check if the middle square is vacant
-            if (!hit){
-                if (this.signs[1][4] == this.BLANK){
-                    this.signs[1][4] = 'O';
-                    hit = true;
-                }
-            }
-            // check for corners if empty
-            if (!hit){
-                let blanks = [];
-                [[0, 0], [0, 2], [2, 6], [2, 8]].forEach(el => {
-                    if (this.signs[el[0]][el[1]] == this.BLANK){
-                            blanks.push(el);
-                        }
-                });
-                if (blanks.length > 0){
-                    const rndCell = blanks[Math.floor(Math.random() * blanks.length)];
-                    this.signs[rndCell[0]][rndCell[1]] = 'O'
-                    hit = true;
-                }
-            }
-            //look for every vacant cell.
-            if (!hit){
-                let blanks = [];
-                for (let i = 0; i < 3; i++){
-                    for ( let key in this.signs[i]) {
-                        if (this.signs[i][key] == this.BLANK){
-                            blanks.push([i, key])
-                        }
-                    }
-                }
-                 if (blanks.length > 0){
-                    const rndCell = blanks[Math.floor(Math.random() * blanks.length)];
-                    this.signs[rndCell[0]][rndCell[1]] = 'O'
-                    hit = true;
-                }
-           }
+           let cell = rule5(this.signs, this.BLANK);
+           this.signs[cell[0]][cell[1]] = 'O'
            this.isXTurn = !this.isXTurn;
            return;
           },
