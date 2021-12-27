@@ -183,5 +183,4 @@ const rules1 = function (signs, blank) {
     return [0, 0];
 }
 
-export default rules5;
-export { rules4, rules3, rules2, rules1 };
+export  {rules5, rules4, rules3, rules2, rules1 };

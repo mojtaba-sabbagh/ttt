@@ -28,12 +28,13 @@
 
 <script>
     import Square from './Square.vue';
-    import rule5 from './rules.js';
+    import {rules5, rules4, rules3, rules2, rules1} from './rules.js';
 
     export default {
 
         props: {
-            onePlayer: Boolean
+            onePlayer: Boolean,
+            level: String,
         },
         components: {
             Square
@@ -68,18 +69,18 @@
                 this.won = true;
               }
             }
-            if (this.onePlayer && !this.won && !this.isXTurn){
-                this.computerPlay();
-                this.pname = this.calculateWinner();
-                if (this.pname){
-                    this.won = true;
-              }
-            }
             if (this.allCellsFilled() && !this.won){
                 this.draw = true;
             }
             else {
                 this.draw = false;
+            }
+            if (this.onePlayer && !this.won && !this.isXTurn && !this.draw){
+                this.computerPlay(this.level);
+                this.pname = this.calculateWinner();
+                if (this.pname){
+                    this.won = true;
+              }
             }
           },
           fillBlank: function () {
@@ -121,8 +122,25 @@
                }
               return true;
           },
-          computerPlay: function () {
-           let cell = rule5(this.signs, this.BLANK);
+          computerPlay: function (plevel) {
+              let cell = []
+              switch(plevel) {
+                case "1": 
+                    cell = rules1(this.signs, this.BLANK);
+                    break;
+                case "2": 
+                    cell = rules2(this.signs, this.BLANK);
+                    break;
+                case "3": 
+                    cell = rules3(this.signs, this.BLANK);
+                    break;
+                case "4": 
+                    cell = rules4(this.signs, this.BLANK);
+                    break;
+                case "5": 
+                    cell = rules5(this.signs, this.BLANK);
+                    break;
+              }
            this.signs[cell[0]][cell[1]] = 'O'
            this.isXTurn = !this.isXTurn;
            return;

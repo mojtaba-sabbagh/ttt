@@ -5,10 +5,17 @@
         <span class="slider round"></span>
       </label>
       <span v-bind:class="[onePlayer ? blueFont : grayFont]"> One Player </span>
+      <select class="form-select-inline form-select-sm" v-model="level">
+        <option value="1" selected>level 1</option>
+        <option value="2">level 2</option>
+        <option value="3">level 3</option>
+        <option value="4">level 4</option>
+        <option value="5">level 5</option>
+      </select>
   </div>
 
   <!--img alt="tic tac teo logo" src="./assets/tic-img.png"-->
-  <Board v-bind:onePlayer="onePlayer"/>
+  <Board v-bind:onePlayer="onePlayer" v-bind:level="level"/>
 </template>
 
 <script>
@@ -24,6 +31,7 @@ export default {
       onePlayer: false,
       blueFont: "bluefont",
       grayFont: "grayfont",
+      level: "1",
     }
   }
 }
@@ -48,5 +56,9 @@ img {
 .grayfont{
   color: gray;
 }
+select {
+  margin-left: 10px;
+}
 @import "./assets/style.css";
+@import "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css";
 </style>
