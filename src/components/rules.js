@@ -58,6 +58,20 @@ const middleSquare = function (signs, blank) {
     }
 }
 
+const noncheckCorners = function (signs, blank) {
+    // check for corners if empty
+    let blanks = [];
+    [[0, 1], [1, 3], [1, 5], [2, 7]].forEach(el => {
+        if (signs[el[0]][el[1]] == blank){
+                blanks.push(el);
+            }
+    });
+    if (blanks.length > 0){
+        const rndCell = blanks[Math.floor(Math.random() * blanks.length)];
+        return [rndCell[0], rndCell[1]];
+    }
+}
+
 const checkCorners = function (signs, blank) {
     // check for corners if empty
     let blanks = [];
@@ -71,6 +85,16 @@ const checkCorners = function (signs, blank) {
         return [rndCell[0], rndCell[1]];
     }
 }
+
+const iCorners = function (signs, blank) {
+    // check for corners if two diagnal corners are taken.
+    [[[0, 0], [2, 8]], [[0, 2], [2, 6]]].forEach(el => {
+        if ((signs[el[0][0]][el[0][1]] && signs[el[1][0]][el[1][1]])){
+            return noncheckCorners(signs, blank);
+        }
+    });
+        return checkCorners(signs, blank);
+    }
 
 const anyVacant = function (signs, blank){
     //look for every vacant cell.
@@ -86,6 +110,34 @@ const anyVacant = function (signs, blank){
         const rndCell = blanks[Math.floor(Math.random() * blanks.length)];
         return [rndCell[0], rndCell[1]];
     }
+}
+const rules6 = function (signs, blank) {
+    // check if I can be a winner!
+    let result = ifWinner(signs, blank);
+    if (result){
+        return result;
+    }
+    // if I can stop winning competitor.
+    result = stopWinning(signs, blank);
+    if (result){
+        return result;
+    }
+    // check if the middle square is vacant
+    result = middleSquare(signs, blank);
+    if (result){
+        return result;
+    }
+    // check for corners if empty
+    result = iCorners(signs, blank);
+    if (result){
+        return result;
+    }
+    //look for every vacant cell.
+    result = anyVacant(signs, blank);
+    if (result){
+        return result;
+    }
+    return [0, 0];
 }
 
 const rules5 = function (signs, blank) {
@@ -105,7 +157,7 @@ const rules5 = function (signs, blank) {
         return result;
     }
     // check for corners if empty
-    result = checkCorners(signs, blank);
+    result = noncheckCorners(signs, blank);
     if (result){
         return result;
     }
@@ -183,4 +235,4 @@ const rules1 = function (signs, blank) {
     return [0, 0];
 }
 
-export  {rules5, rules4, rules3, rules2, rules1 };
+export  {rules6, rules5, rules4, rules3, rules2, rules1 };

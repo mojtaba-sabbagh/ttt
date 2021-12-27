@@ -1,21 +1,23 @@
 <template>
   <div>
       <label class="switch">
-        <input type="checkbox" v-model="onePlayer">
+        <input type="checkbox" v-model="onePlayer" @change="$refs.myBoard.fillBlank()">
         <span class="slider round"></span>
       </label>
       <span v-bind:class="[onePlayer ? blueFont : grayFont]"> One Player </span>
-      <select class="form-select-inline form-select-sm" v-model="level">
+      <select class="form-select-inline form-select-sm mb-5" 
+        v-model="level" @change="$refs.myBoard.fillBlank()">
         <option value="1" selected>level 1</option>
         <option value="2">level 2</option>
         <option value="3">level 3</option>
         <option value="4">level 4</option>
         <option value="5">level 5</option>
+        <option value="6">level 6</option>
       </select>
   </div>
 
   <!--img alt="tic tac teo logo" src="./assets/tic-img.png"-->
-  <Board v-bind:onePlayer="onePlayer" v-bind:level="level"/>
+  <Board v-bind:onePlayer="onePlayer" v-bind:level="level" ref="myBoard"/>
 </template>
 
 <script>

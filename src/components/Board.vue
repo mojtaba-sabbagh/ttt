@@ -28,7 +28,7 @@
 
 <script>
     import Square from './Square.vue';
-    import {rules5, rules4, rules3, rules2, rules1} from './rules.js';
+    import {rules6, rules5, rules4, rules3, rules2, rules1} from './rules.js';
 
     export default {
 
@@ -91,6 +91,7 @@
             });
             this.won = false;
             this.isXTurn = true;
+            this.draw = false;
           },
           calculateWinner: function () {
             const lines = [
@@ -140,6 +141,9 @@
                 case "5": 
                     cell = rules5(this.signs, this.BLANK);
                     break;
+                case "6": 
+                    cell = rules6(this.signs, this.BLANK);
+                    break;
               }
            this.signs[cell[0]][cell[1]] = 'O'
            this.isXTurn = !this.isXTurn;
@@ -152,6 +156,7 @@
 <style>
    .resetButton {
         margin-top: 2em;
+        margin-bottom: 2em;
       }
     .XClass {
         color: blue;
